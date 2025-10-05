@@ -1,0 +1,48 @@
+import sys
+
+# The raw byte string, with escaped characters converted to their actual byte values
+midi_data_string = r"MThd \0\0\0\6 \0\1 \0\2 \0\x78 MTrk \0\255\3\11Instrumental \0\255\81\3\4\x1B\70\7 \0\144\60\64\96 \96\128\60\0 \0\144\62\64\96 \96\128\62\0 \0\144\64\64\96 \96\128\64\0 \0\144\65\64\96 \96\128\65\0 \0\255\47\0 MTrk \0\255\3\9VocalGuide \0\255\81\3\4\x1B\70\7 \0\144\67\64\96 \96\128\67\0 \0\144\65\64\96 \96\128\65\0 \0\144\64\64\96 \96\128\64\0 \0\144\62\64\96 \96\128\62\0 \0\144\60\64\96 \96\128\60\0 \0\255\47\0"
+
+# Replace escaped representations with actual byte values
+midi_data = midi_data_string.replace(r"\0", b'\x00'.decode('latin-1'))
+midi_data = midi_data.replace(r"\1", b'\x01'.decode('latin-1'))
+midi_data = midi_data.replace(r"\2", b'\x02'.decode('latin-1'))
+midi_data = midi_data.replace(r"\3", b'\x03'.decode('latin-1'))
+midi_data = midi_data.replace(r"\4", b'\x04'.decode('latin-1'))
+midi_data = midi_data.replace(r"\6", b'\x06'.decode('latin-1'))
+midi_data = midi_data.replace(r"\7", b'\x07'.decode('latin-1'))
+midi_data = midi_data.replace(r"\9", b'\x09'.decode('latin-1'))
+midi_data = midi_data.replace(r"\11", b'\x0b'.decode('latin-1'))
+midi_data = midi_data.replace(r"\x1B", b'\x1b'.decode('latin-1'))
+midi_data = midi_data.replace(r"\x78", b'\x78'.decode('latin-1'))
+midi_data = midi_data.replace(r"\x70", b'\x70'.decode('latin-1'))
+midi_data = midi_data.replace(r"\128", b'\x80'.decode('latin-1'))
+midi_data = midi_data.replace(r"\144", b'\x90'.decode('latin-1'))
+midi_data = midi_data.replace(r"\255", b'\xff'.decode('latin-1'))
+midi_data = midi_data.replace(r"\81", b'\x51'.decode('latin-1'))
+midi_data = midi_data.replace(r"\47", b'\x2f'.decode('latin-1'))
+midi_data = midi_data.replace(r"\96", b'\x60'.decode('latin-1'))
+
+# Add specific hexadecimal values
+midi_data = midi_data.replace(r"MThd ", b'MThd')
+midi_data = midi_data.replace(r" MTrk ", b'MTrk')
+midi_data = midi_data.replace(r"Instrumental ", b'Instrumental')
+midi_data = midi_data.replace(r"VocalGuide ", b'VocalGuide')
+midi_data = midi_data.replace(r" ", b'')
+midi_data = midi_data.replace(r"60", b'60')
+midi_data = midi_data.replace(r"62", b'62')
+midi_data = midi_data.replace(r"64", b'64')
+midi_data = midi_data.replace(r"65", b'65')
+midi_data = midi_data.replace(r"67", b'67')
+
+midi_bytes = midi_data.encode('latin-1')
+
+file_path = "BubbleGum Guide.mid"
+
+try:
+    with open(file_path, "wb") as file:
+        file.write(midi_bytes)
+    print(f"File '{file_path}' created successfully.")
+except Exception as e:
+    print(f"Error writing file: {e}", file=sys.stderr)
+
